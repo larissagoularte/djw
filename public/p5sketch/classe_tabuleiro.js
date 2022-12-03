@@ -21,7 +21,6 @@ for (let x = 0; x < tiles_num; x++) {
     board[x] = []
     for (let y = 0; y < tiles_num; y++) {
         board[x][y] = new Tile(x, y, sideX, sideY);
-        console.log(board[x][y])
         sideY += tile_size_y
     }
     sideX += tile_size_x
@@ -32,4 +31,19 @@ function rollDice() {
     diceRoll = int(random(1, 7));
     console.log(diceRoll)
     update_player_pos(diceRoll)
+}
+
+class Tabuleiro{
+
+    constructor(turn){
+        this.turn=turn
+    }
+
+    turn_counter(){
+        text("turno: "+this.turn, 0, 800)
+    }
+
+    turn_update(){
+
+    }
 }
