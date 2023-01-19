@@ -20,10 +20,8 @@ class Jogador{
     }
 
     display_player_status(){
-        textSize(32);
-        text("nome: "+this.nome, 0, 32)
-        text("dinheiro: "+this.dinheiro+"€$", 0, 132)
-        text("carisma: "+this.carisma+"☆", 0, 232)
+        tagnome.html("nome: "+this.nome)
+        tagcarisma.html("carisma: "+this.carisma)
     }
 }
 
@@ -38,14 +36,14 @@ function drawBoard() {
 let x=0
 let y=0
 function update_player_pos(diceRoll){
-    for (k = 0; k < 1; k++) {
+    for (k = 0; k < diceRoll; k++) {
        
         //linha 4
         if (player.x==0 && player.y > 0){
             y--
             player.y=y
             player.pos_y = board[x][y].pos_y
-            console.log("player.x= "+player.x+"\nplayer.y= "+player.y+"\nplayer.pos_x: "+player.pos_x+"\nplayer.pos_y: "+player.pos_y+"\nCONDIÇÃO DOIS ")
+            console.log("player.x= "+player.x+"\nplayer.y= "+player.y+"\nplayer.pos_x: "+player.pos_x+"\nplayer.pos_y: "+player.pos_y)
         }
 
         //linha 3
@@ -61,7 +59,7 @@ function update_player_pos(diceRoll){
             y++
             player.y=y
             player.pos_y = board[x][y].pos_y
-            console.log("player.x= "+player.x+"\nplayer.y= "+player.y+"\nplayer.pos_x: "+player.pos_x+"\nplayer.pos_y: "+player.pos_y+"\nCONDIÇÃO DOIS ")
+            console.log("player.x= "+player.x+"\nplayer.y= "+player.y+"\nplayer.pos_x: "+player.pos_x+"\nplayer.pos_y: "+player.pos_y)
 
         }
         
@@ -70,16 +68,45 @@ function update_player_pos(diceRoll){
             x++ 
             player.x=x
             player.pos_x = board[x][y].pos_x
-            console.log("player.x= "+player.x+"\nplayer.y= "+player.y+"\nplayer.pos_x: "+player.pos_x+"\nplayer.pos_y: "+player.pos_y+"\nCONDIÇÃO UM ")
+            console.log("player.x= "+player.x+"\nplayer.y= "+player.y+"\nplayer.pos_x: "+player.pos_x+"\nplayer.pos_y: "+player.pos_y)
         }
 
         //atualizar turno
         if (player.x == 0 && player.y == 1){
-            tabuleito.turn+=1
+
+            if (scene==0){
+                document.getElementById("dinheiro").style.display = "none";
+                document.getElementById("nome").style.display = "none";
+                document.getElementById("carisma").style.display = "none";
+                document.getElementById("turno").style.display = "none";
+            }
+            
+            if(scene==1){
+                tabuleito.turn+=1
             update_turn="UPDATE tabuleiro SET turn='"+tabuleito.turn+"'"   
             
             tabuleito.turn_counter()
+            player.dinheiro+=500
+
+            tagdinheiro.html("Dinhero: "+player.dinheiro+"€$")
+            tagturno.html("turn: "+tabuleito.turn)
+            }
         }
         
     }    
+}
+
+//player = new Jogador(0, 0, board[0][0].pos_x, board[0][0].pos_y, arr_cores[index_cor], "nome do bicho", 5000, 20)
+function novoJogador(username){
+    this.nome=username
+    this.x=0,
+    this.y=0,
+    this.pos_x=pos_x=0, 
+    this.pos_y=pos_y=0
+    this.money=5000,
+    this.carisma
+}
+
+function jogadorExistente(){
+
 }

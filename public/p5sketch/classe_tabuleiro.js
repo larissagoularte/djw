@@ -9,6 +9,7 @@ class Tile {
 
     draw_tile() {
         push()
+        noStroke()
         rect(this.pos_x, this.pos_y, tile_size_x, tile_size_y);
         pop();
     }
@@ -41,9 +42,13 @@ class Tabuleiro{
 
     turn_counter(){
         text("turno: "+this.turn, 0, 800)
-    }
-
-    turn_update(){
 
     }
+}
+
+function statusDisplay(){
+    document.getElementById("dinheiro").style.display = "inline";
+    document.getElementById("nome").style.display = "inline";
+    document.getElementById("carisma").style.display = "inline";
+    document.getElementById("turno").style.display = "inline";
 }
