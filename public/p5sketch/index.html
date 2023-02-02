@@ -2,40 +2,66 @@
 <html lang="en">
 
 <head>
+  <link rel="icon" href="/assets/dado.ico">
   <script src="p5.js"></script>
   <script src="p5.sound.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
   <meta charset="utf-8">
-
 </head>
 
 <body>
-
-  <div id="status_display">
-    <h4 id="dinheiro">aqui dinheiro</h4>
+  <div id="status_display" style="display: none;">
     <h4 id="nome">nome</h4>
+    <h4 id="dinheiro">aqui dinheiro</h4>
     <h4 id="carisma">carisma</h4>
     <h4 id="turno">turno</h4>
   </div>
-  
 
+  <div>
+    <img src="assets/loggo.png" id="imgLogo" alt="não deu">
+  </div>
+
+  <img id="imgLogin" src="assets/login.png" alt="nop :(">
+  <img id="imgRegister" src="assets/registo.png" alt="nop :(">
+
+  <div id="divLogin">
+    <div id="cardHead">
+      <h1>Long-in</h1>
+    </div>
+    <label >Nome do Jogador:</label><br>
+    <input type="text" id="usernameLogin"><br>
+    <label for="lname">Palavra-passe:</label><br>
+    <input type="password" id="passwordLogin"> <br>
+    <!--
+      <img src="assets/next.png" id="btnLoginSubmit" alt="">
+    -->
+    
+  </div>
+
+  <div id="divRegisto">
+    <div id="cardHead">
+      <h1>Registar</h1>
+    </div>
+    <label for="fname">Nome do Jogador:</label><br>
+    <input type="text" id="usernameRegister" name="fname"><br>
+    <label for="lname">Palavra-passe:</label><br>
+    <input type="password" id="passwordRegister" name="lname"> <br>
+    <!--
+      <img src="assets/next.png" id="btnRegisterSubmit" alt="">
+    -->
+    
+
+  </div>
 
   <main>
+
   </main>
+
   <script src="sketch.js"></script>
-  <script src="auth.js"></script>
   <script src="classe_jogador.js"></script>
   <script src="classe_tabuleiro.js"></script>
-  
-  <script>
-    /*
-      document.getElementById("dinheiro").style.display = "none";
-      document.getElementById("nome").style.display = "none";
-      document.getElementById("carisma").style.display = "none";
-      document.getElementById("turno").style.display = "none";
-    */
-  </script>
+  <script src="funcionalidadesJogo.js"></script>
 
 </body>
 

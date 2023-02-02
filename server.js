@@ -3,21 +3,21 @@ const mysql = require('mysql')
 var bodyParser = require('body-parser');
 const app = express()
 const port = 3000
+const bcrypt = require("bcrypt")
 
 app.use(express.static('public/p5sketch'))
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-const connection = mysql.createConnection({
+const dbConn = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'root',
-  database: 'teicoverdb',
-  port: '3306'
+  database: 'teicoverdb'
 });
 
-connection.connect((error) => {
+dbConn.connect((error) => {
   if (error) {
     console.log('Error connecting to the MySQL Database');
     return;
@@ -26,7 +26,45 @@ connection.connect((error) => {
 });
 
 
-//metodos GRUD
+//registar 
+app.post("/register", (req, res) => {
+
+  let username = req.body.username;
+  let password = req.body.password;
+
+  let sql = "SELECT username FROM User WHERE username='" + username + "';"
+
+  dbConn.query(sql, (err, result) => {
+    if (err) throw err;
+
+    if (result.length > 0) {
+      res.send({ "ack": 0 });
+    } else {
+
+      let sql = "INSERT INTO user (username,userpassword, dinheiro, carisma) VALUES ('" + username + "','" + password + "'," + 5000 + "," + 20 + ");"
+
+      dbConn.query(sql, (err, result) => {
+        if (err) throw err;
+
+        let sql = "SELECT user_id FROM user WHERE username='" + username + "' and userpassword='" + password + "';";
+
+        dbConn.query(sql, (err, result) => {
+          if (err) throw err;
+          id = result[0].user_id;
+
+          let sql = "INSERT INTO tabuleiro (pos_x, pos_y, turn) VALUES (" + 0 + "," + 0 + ","+0+");";
+
+          dbConn.query(sql, (err, result) => {
+            if (err) throw err;
+
+            res.send(result);
+
+          });
+        });
+      });
+    }
+  });
+});
 
 //Login
 app.post("/login", (req, res) => {
@@ -36,7 +74,7 @@ app.post("/login", (req, res) => {
 
   let sql = "SELECT * FROM user WHERE username='" + username + "' AND userpassword = '" + password + "';"
 
-  connection.query(sql, (err, result) => {
+  dbConn.query(sql, (err, result) => {
     if (err) throw err;
 
     res.send(result);
@@ -44,80 +82,50 @@ app.post("/login", (req, res) => {
   });
 });
 
-//Register
-app.post("/register", (req, res) => {
- 
-  let username = req.body.username;
-  let password = req.body.password;
+//vai buscar as posições do jogador a base de dados
+app.get("/getPlayersPosition/", (req, res) => {
 
-  /*
-  let selectAllUsers = "SELECT * FROM user;"
-  connection.query(selectAllUsers, (err, res) => {
-    if (err){
-      console.log(err)
-    }
+  let sql = "SELECT * FROM tabuleiro ;";
 
-  })
-  */
- 
-  let sql = "SELECT username FROM user WHERE username='" + username + "';"
+  dbConn.query(sql, (err, result) => {
 
-  connection.query(sql, (err, result) => {
     if (err) throw err;
 
-    if (result.length > 0) {
-      res.send({ "ack": 0 });
-    } else {
+    res.send(result);
 
-      let sql = "INSERT INTO user (`username`,`userpassword`) VALUES ('" + username + "','" + password + "');";
-
-      connection.query(sql, (err, result) => {
-        if (err) throw err;
-
-        let sql = "SELECT username FROM user WHERE username='" + username + "' and userpassword='" + password + "';";
-
-
-        connection.query(sql, (err, result) => {
-          if (err) throw err;
-          let user_id = result[0].nome;
-
-          let sql = "INSERT INTO user (`nome`,`pos_x`,`pos_y`) VALUES ('" + user_id + "','" + 0 + "','" + 0 + "');";
-
-          connection.query(sql, (err, result) => {
-            if (err) throw err;
-
-            res.send([{ "PlayerId": user_id }]);
-
-          });
-
-        });
-
-      });
-    }
   });
-});
-
-//atualizar propriedades
-
-app.post("/atualizarTurno", (req, res) =>{
-
-  let sql = "UPDATE tabuleiro SET turn '"+req.body.turn+" "
-})
-
-app.post("/updatePlayerPos",(req,res)=>{
-
-  let sql = "UPDATE tabuleiro SET PlayerPos='"+req.body.position+"' WHERE PlayerId='"+req.body.playerId+"';";
-
-        dbase.query(sql, (err,result)=>{
-        if(err) throw err;
-
-        res.send(result);
-
-    });
-
-
 });
 
 app.listen(port, () => {
   console.log(`Servidor a rodar em localhost:${port}`)
 })
+
+//atualizar posiçoes do jogador
+app.post("/updatePlayerPos", (req, res) => {
+
+  let sql = "UPDATE tabuleiro SET pos_x=" + req.body.pos_x + ",pos_y="+ req.body.pos_y +" WHERE user_id=" + req.body.playerId + ";";
+
+  dbConn.query(sql, (err, result) => {
+    if (err) throw err;
+
+    res.send(result);
+
+  });
+});
+
+//pos de um player em especifico
+app.get("/getMyPos/:playerId",(req,res)=>{
+     
+  let playerId= req.params.playerId;
+
+    let sql = "SELECT pos_x, pos_y FROM tabuleiro Where user_id='"+playerId+"';";
+
+    dbConn.query(sql, (err,result)=>{
+      if(err) throw err;
+
+      res.send(result);
+
+      });
+
+  });
+
