@@ -10,33 +10,30 @@
   <meta charset="utf-8">
 </head>
 
-<body>
-  <div id="status_display" style="display: none;">
-    <h4 id="nome">nome</h4>
-    <h4 id="dinheiro">aqui dinheiro</h4>
-    <h4 id="carisma">carisma</h4>
-    <h4 id="turno">turno</h4>
-  </div>
+<script src="sketch.js"></script>
+<script src="classe_tabuleiro.js"></script>
+<script src="funcionalidadesJogo.js"></script>
 
-  <div>
-    <img src="assets/loggo.png" id="imgLogo" alt="não deu">
-  </div>
+<body>
+  <img src="assets/loggo.png" id="imgLogo" alt="">
+
 
   <img id="imgLogin" src="assets/login.png" alt="nop :(">
   <img id="imgRegister" src="assets/registo.png" alt="nop :(">
 
   <div id="divLogin">
     <div id="cardHead">
-      <h1>Long-in</h1>
+      <h1>Log-in</h1>
     </div>
-    <label >Nome do Jogador:</label><br>
+    <label>Nome do Jogador:</label><br>
     <input type="text" id="usernameLogin"><br>
     <label for="lname">Palavra-passe:</label><br>
     <input type="password" id="passwordLogin"> <br>
-    <!--
-      <img src="assets/next.png" id="btnLoginSubmit" alt="">
-    -->
-    
+    <div style="background-color: rgb(110, 165, 195);">
+      <img src="assets/next.png" class="nextBtn" id="btnLoginSubmit" alt="">
+    </div>
+
+
   </div>
 
   <div id="divRegisto">
@@ -47,21 +44,15 @@
     <input type="text" id="usernameRegister" name="fname"><br>
     <label for="lname">Palavra-passe:</label><br>
     <input type="password" id="passwordRegister" name="lname"> <br>
-    <!--
-      <img src="assets/next.png" id="btnRegisterSubmit" alt="">
-    -->
-    
+    <div style="background-color: rgb(110, 165, 195);">
+      <img src="assets/next.png" class="nextBtn" id="btnRegisterSubmit" alt="">
+    </div>
 
   </div>
 
   <main>
 
   </main>
-
-  <script src="sketch.js"></script>
-  <script src="classe_jogador.js"></script>
-  <script src="classe_tabuleiro.js"></script>
-  <script src="funcionalidadesJogo.js"></script>
 
 </body>
 

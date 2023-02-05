@@ -36,6 +36,7 @@ function drawBoard() {
       board[i][j].draw_tile()
     }
   }
+
 }
 
 //get all players
@@ -61,48 +62,47 @@ function rollDice() {
 
     player_posX = response[0].pos_x;
     player_posY = response[0].pos_y;
-    console.log("posição inial do jogador: x="+player_posX+", y="+player_posY)
 
     let x = response[0].pos_x
     let y = response[0].pos_y
-    console.log("x="+x+", y="+y)
 
     for (k = 0; k < diceRoll; k++) {
-      
+
       //linha 4
       if (player_posX == 0 && player_posY > 0) {
         y--
         player_posY = y
-        console.log("posição do jogador: x="+player_posX+", y="+player_posY)
+        console.log("posição do jogador: x=" + player_posX + ", y=" + player_posY)
       }
 
       //linha 3
       if (player_posY == tiles_num - 1 && player_posX > 0) {
         x--
         player_posX = x
-        console.log("posição do jogador: x="+player_posX+", y="+player_posY)
+        console.log("posição do jogador: x=" + player_posX + ", y=" + player_posY)
       }
 
       //linha 2
       if (player_posX == tiles_num - 1 && player_posY < tiles_num - 1) {
         y++
         player_posY = y
-        console.log("posição do jogador: x="+player_posX+", y="+player_posY)
+        console.log("posição do jogador: x=" + player_posX + ", y=" + player_posY)
       }
 
       //linha 1
       if (player_posX >= 0 && player_posY == 0) {
         x++
         player_posX = x
-        console.log("posição do jogador: x="+player_posX+", y="+player_posY)
+        console.log("posição do jogador: x=" + player_posX + ", y=" + player_posY)
       }
+      changeTurn(playerId)
       updateBoard(player_posX, player_posY);
     }
-    
+
   })
 }
 
-function updateBoard(player_posX,player_posY) {
+function updateBoard(player_posX, player_posY) {
 
   let data = {
     "playerId": playerId,
@@ -113,15 +113,5 @@ function updateBoard(player_posX,player_posY) {
   httpPost("/updatePlayerPos", "json", data, (response) => {
 
     createBoard();
-
   });
 }
-
-
-function statusDisplay() {
-  document.getElementById("dinheiro").style.display = "inline";
-  document.getElementById("nome").style.display = "inline";
-  document.getElementById("carisma").style.display = "inline";
-  document.getElementById("turno").style.display = "inline";
-}
-

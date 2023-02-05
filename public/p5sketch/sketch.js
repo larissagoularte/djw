@@ -1,5 +1,5 @@
-const canvas_width = 900
-const canvas_height = 900
+const canvas_width = 800
+const canvas_height = 800
 const tiles_num = 9
 let tile_size_x = canvas_width / tiles_num
 let tile_size_y = canvas_height / tiles_num
@@ -11,12 +11,15 @@ let tagturno;
 let scene = 1
 
 //info do jogador logado
-var playerId
-var playerName
-var playerDinheiro
-var playerCarisma
-var player_posX
-var player_posY
+let playerId
+let playerName
+let playerDinheiro
+let playerCarisma
+let player_posX
+let player_posY
+
+//outras variaveis globais
+let fourthPlayer
 
 function login() {
 
@@ -33,14 +36,14 @@ function login() {
   httpPost('/login', 'json', data, (response) => {
 
     if (response.length > 0) {
-      
+
+      console.log(response)
       playerId = response[0].user_id;
       playerName = response[0].username
       playerDinheiro = response[0].dinheiro
       playerCarisma = response[0].carisma
       player_posX = response[0].pos_x
       player_posY = response[0].pos_y
-      display_player_status(playerName,playerDinheiro, playerCarisma)
 
       apagarAllScenes()
       removeElements();
@@ -59,7 +62,7 @@ function register() {
 
   let usernameValue = document.getElementById("usernameRegister").value
   let passwordValue = document.getElementById("passwordRegister").value
-  
+
   let data = {
 
     "username": usernameValue,
@@ -71,14 +74,14 @@ function register() {
     if (response.length > 0) {
       alert("Registado com sucesso")
 
-      console.log("resposta " + response.username);
+      console.log(response)
+
       playerId = response[0].user_id;
       playerName = response[0].username
       playerDinheiro = response[0].dinheiro
       playerCarisma = response[0].carisma
       player_posX = response[0].pos_x
       player_posY = response[0].pos_y
-      display_player_status(playerName, playerDinheiro, playerCarisma)
 
       apagarAllScenes()
       removeElements();
@@ -120,27 +123,22 @@ function draw() {
     loginScene()
   if (scene == 3)
     registerScene()
-  
+
 }
+
+
 
 function gameScene() {
 
   removeElements();
-  
+
   background('#bed9e7')
   drawBoard()
   image(img_board, 0, 0, canvas_width, canvas_height)
-
+  display_players_status()
   createBoard()
-  document.getElementById("status_display").style.display = "inline"
-
-
-  let diceBtn = createButton("roda o dado!");
-  diceBtn.position(canvas_width * 0.5, 0);
-  diceBtn.mousePressed(rollDice)
-
+  checkTurn()
 }
-
 
 function startScene() {
   //botão login
@@ -150,23 +148,23 @@ function startScene() {
   //botão register 
   let buttonRegister = select("#imgRegister")
   buttonRegister.mousePressed(registerScene);
+
 }
 
 function loginScene() {
   apagarStartScene()
-  noLoop()
   document.getElementById("divLogin").style.display = "block"
 
-  submitBtn = createButton('Login User');
-  submitBtn.position(windowWidth*0.5-50, windowHeight*0.5);
-  submitBtn.mousePressed(login);
+  submitLoginBtn = select("#btnLoginSubmit");
+  submitLoginBtn.mousePressed(login);
+
 }
 
 function registerScene() {
   apagarStartScene()
-  document.getElementById("divRegisto").style.display="block"
+  document.getElementById("divRegisto").style.display = "block"
 
-  registerUser = createButton("registar");
-  registerUser.position(windowWidth*0.5-50, windowHeight*0.5);
-  registerUser.mousePressed(register)
+  submitRegisterBtn = select("#btnRegisterSubmit")
+  submitRegisterBtn.mousePressed(register)
+
 }
